@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人造板智能问答系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .custom-container {
+            max-width: 720px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+        }
+
+        .custom-header {
+            background: #2c3e50;
+            color: white;
+            padding: 2rem;
+            border-radius: 16px 16px 0 0;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-button {
+            background: #3498db;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .custom-button:hover {
+            background: #2980b9;
+            transform: scale(1.02);
+        }
+
+        .answer-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .answer-card:hover {
+            transform: translateX(4px);
+        }
+
+        @media (max-width: 768px) {
+            .custom-header {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="custom-container bg-white p-8 rounded-lg shadow-md w-full max-w-3xl">
+        <div class="custom-header">
+            <h1 class="text-4xl font-bold text-center mb-4">人造板智能问答系统</h1>
+            <p class="text-gray-300 text-center">专业解答人造板相关问题</p>
+        </div>
+
+        <form id="question-form" class="mb-6">
+            <div class="relative rounded-lg shadow-md">
+                <input type="text" id="question-input" placeholder="请输入你的问题"
+                    class="w-full border-0 rounded-lg px-6 py-3 pl-12 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <div class="absolute left-0 top-0 flex items-center pl-4 h-full text-gray-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                    </svg>
+                </div>
+                <button type="button" id="submit-button"
+                    class="absolute right-0 top-0 h-full px-6 py-3 custom-button rounded-r-lg">
+                    发送
+                </button>
+            </div>
+        </form>
+
+        <div id="answer-display" class="space-y-4 px-4">
+            <!-- 答案将显示在这里 -->
+        </div>
+    </div>
+
+    <script>
+        const questionsAndAnswers = {
+            "什么是人造板": "人造板是以木材或其他非木材植物为原料，经一定机械加工分离成各种单元材料后，施加或不施加胶粘剂和其他添加剂胶合而成的板材或模压制品。",
+            "人造板有哪些常见类型": "常见的人造板类型有胶合板、刨花板、纤维板、细木工板等。",
+            "人造板的优点是什么": "人造板的优点包括幅面大、结构性好、施工方便；膨胀收缩率低，尺寸稳定；可根据不同的使用要求，加工成不同规格和形状的产品。",
+            "人造板环保吗": "人造板的环保程度取决于其生产过程中使用的胶粘剂和原材料。一些使用环保胶粘剂和优质原材料生产的人造板，其甲醛释放量可以控制在安全范围内，是比较环保的；但也有一些低质量的人造板可能存在甲醛释放超标等环保问题。",
+            "这个缺陷是什么": "这个缺陷是溢胶，主要的危害是：1、影响板材物理性能。2、释放有害物质危害健康。3、影响后续加工与使用等等"
+        };
+
+        const questionInput = document.getElementById('question-input');
+        const submitButton = document.getElementById('submit-button');
+        const answerDisplay = document.getElementById('answer-display');
+
+        submitButton.addEventListener('click', function () {
+            const question = questionInput.value.trim();
+            if (!question) return;
+
+            const answer = questionsAndAnswers[question];
+            const answerElement = document.createElement('div');
+            answerElement.className = 'answer-card';
+
+            if (answer) {
+                answerElement.innerHTML = `
+                    <p class="font-semibold text-xl mb-2">${question}</p>
+                    <p class="text-gray-700 leading-relaxed">${answer}</p>
+                `;
+            } else {
+                answerElement.className = 'answer-card bg-red-100 border border-red-200';
+                answerElement.innerHTML = `
+                    <p class="font-semibold text-xl text-red-600 mb-2">未找到答案</p>
+                    <p class="text-gray-700 leading-relaxed">请尝试其他问题或联系人工客服。</p>
+                `;
+            }
+
+            answerDisplay.prepend(answerElement);
+            questionInput.value = '';
+            questionInput.focus();
+        });
+    </script>
+</body>
+
+</html>
